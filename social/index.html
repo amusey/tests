@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<title>Sample page for testing cache requests</title>
+	</head>
+	<body>
+		<h1>Parent Page</h1>
+		<br>
+		<h3>iFrame below</h3>
+		<iframe height="700" width="100%" id='iframe-xword' allowfullscreen="true" style="border:none;width: 100% !important;position: static;display: block !important;margin: 0 !important;"  name="dbd4fe2239312cf3b7081537df0b22ced9a2e57861fd932134d0c57d391b1516" ></iframe>
+	<script type="text/javascript">
+		function parseTypeAndValues(a) {
+			if (a === "") return {};
+			var b = {};
+			for (var i = 0; i < a.length; ++i)
+			{
+				var p = a[i].split('=', 2);
+				if (p.length === 1)
+					b[p[0]] = "";
+				else
+					b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+			}
+			return b;
+		}
+		function loadIframe() {
+			var iframeURL = 'https://amuselabs.com/pmm/crossword?embed=1&compact=1&maxCols=2'; 
+			var set = 'dbd4fe2239312cf3b7081537df0b22ced9a2e57861fd932134d0c57d391b1516'; // default
+			var id = 'f32b4bce';
+			var playId = null;
+
+			var url = document.location.href;
+			var urlComponents = url.split('?');
+			// check if there are any URL params
+			if (urlComponents.length > 1) {
+				var queryString = parseTypeAndValues(urlComponents[1].split('&'));
+				if (queryString.set) {
+					set = queryString.set;
+				}
+				if (queryString.id) {
+					id = queryString.id;
+				}
+				if (queryString.playId) {
+					playId = queryString.playId;
+				}
+			}
+			// create the full iframe URL
+			iframeURL += '&set=' + set;
+			if (id) {
+				iframeURL += '&id=' + id;
+			}
+			if (playId) {
+				iframeURL += '&playId=' + playId;
+			}
+			// src param is URL encoded. this can be hardcoded or can be dynamic
+			var src = encodeURIComponent("https://amusey.github.io/tests/social.html");
+			// var src = encodeURIComponent(urlComponents[0]); // to have dynamic src based on the top URL
+			iframeURL += '&src=' + src;	
+			// To iframeURL, you can also add &uid=hash(some user identifier) if you want. Do not give uid = some personally identifiable information for privacy reasons.
+			// load the iframe with iframeURL
+			var iframe = document.getElementById('iframe-xword');
+			iframe.src = iframeURL;
+		}
+		loadIframe();
+	</script>
+	</body>
+</html>
